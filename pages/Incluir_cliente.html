@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Incluir Cliente en Clase</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #a8e6cf, #dcedc1, #a9def9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .form-box {
+      background-color: #ffffffcc;
+      backdrop-filter: blur(10px);
+      padding: 40px 35px;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      width: 350px;
+    }
+
+    h1 {
+      color: #2b6777;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      color: #2b6777;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      margin-bottom: 15px;
+      background-color: #f1f9f9;
+    }
+
+    button {
+      background-color: #52b788;
+      color: white;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #40916c;
+    }
+
+    img {
+      width: 80%;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-box">
+    <img src=" C:\Users\Adriana\Downloads\CuerpoSanoLOGO.jpg" alt="Gimnasio">
+    <h1>Incluir Cliente en Clase</h1>
+
+    <form>
+      <label>Nombre del Cliente</label>
+      <input type="text" placeholder="Ej: Ana Pérez" required>
+
+      <label>Clase</label>
+      <select required>
+        <option value="">Seleccione una clase</option>
+        <option>Yoga</option>
+        <option>Zumba</option>
+        <option>Musculación</option>
+        <option>Pilates</option>
+      </select>
+
+      <button>Agregar a la Clase</button>
+    </form>
+  </div>
+</body>
+</html>
+

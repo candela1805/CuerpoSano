@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gestión de Clientes - Cuerpo Sano</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600;800&family=Libre+Barcode+128&display=swap" rel="stylesheet">
+ 
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs2@0.0.2/qrcode.min.js"></script>
+
+  <style>
+    :root{
+      --verde-1: #0f766e;
+      --verde-2: #0891b2;
+      --accent: #4caf50;
+      --panel-bg: #ffffff;
+      --surface-shadow: 0 8px 22px rgba(2,6,23,0.08);
+      --radius-md: 14px;
+    }
+
+    *{box-sizing: border-box}
+    html,body{height:100%;margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;color:#123; -webkit-font-smoothing:antialiased}
+
+    body{
+      background: linear-gradient(135deg,#d9f7ee 0%, #e6f7ff 50%, #f7ffe4 100%);
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding:28px;
+    }
+
+    .wrap{
+      width:1100px;
+      max-width:calc(100% - 40px);
+      background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(255,255,255,0.98));
+      border-radius:18px;
+      box-shadow: var(--surface-shadow);
+      padding:22px;
+      display:flex;
+      gap:18px;
+    }
+
+    
+    .panel-form{
+      width:360px;
+      min-width:300px;
+      background:var(--panel-bg);
+      border-radius: var(--radius-md);
+      padding:20px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      align-items:stretch;
+    }
+
+    .panel-form h2{margin:0;color:var(--verde-1);font-size:20px}
+    .muted{color:rgba(0,0,0,0.6);font-size:13px}
+
+    label{display:block;font-weight:600;margin:8px 0 6px;color:#234}
+    input[type="text"], input[type="email"], input[type="date"], input[type="number"], select{
+      width:100%;padding:10px;border-radius:10px;border:1px solid #d6e9e2;background:#fbfffe;font-size:14px;
+    }
+    input:focus, select:focus{outline:none;box-shadow:0 0 0 3px rgba(74,175,124,0.12);border-color:var(--accent)}
+
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .full{grid-column:1/-1}
+
+    .photo-preview{
+      width:100%;
+      height:120px;
+      background:linear-gradient(180deg,#f6fff6,#ffffff);
+      border-radius:10px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      border:1px dashed #e6f3ea;
+    }
+    .photo-preview img{max-height:100%;max-width:100%;object-fit:cover}
+
+    .codigo-barra {
+      font-family: "Libre Barcode 128", cursive;
+      font-size: 34px;
+      text-align:center;
+      padding:8px 6px;
+      border-radius:10px;
+      background:#fbfffb;
+      color:#133;
+      letter-spacing:4px;
+      margin-top:6px;
+    }
+
+    .controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    button{
+      border:none;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer;
+      background:var(--accent); color:white; transition:transform .12s ease,opacity .12s ease;
+    }
+    button.secondary{background:transparent;color:var(--verde-1);border:2px solid rgba(15,118,110,0.12);font-weight:600}
+    button.danger{background:#e05353}
+    button.small{padding:8px 10px;font-size:14px}
+
+   
+    .panel-grid{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .topbar{
+      display:flex;gap:8px;align-items:center;justify-content:space-between;
+    }
+
+    .searchbox{display:flex;gap:8px;align-items:center}
+    .searchbox input{padding:10px;border-radius:10px;border:1px solid #dcefe7;width:320px}
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      background:var(--panel-bg);
+      border-radius:12px;
+      overflow:hidden;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.04);
+    }
+    thead th{background:linear-gradient(90deg,#ecfff7,#f7ffff);color:var(--verde-1);font-weight:700;padding:12px;text-align:left}
+    tbody td{padding:10px;border-bottom:1px solid #eef7ef}
+    tbody tr:hover{background:#fbfff9}
+
+    .table-actions button{margin-right:6px;padding:6px 8px;border-radius:8px;font-weight:600}
+    .table-actions .edit{background:#4fb06a;color:white;border:none}
+    .table-actions .del{background:#ef6b6b;color:white;border:none}
+    .table-actions .print{background:#3aa0c9;color:white;border:none}
+
+    .empty{padding:24px;text-align:center;color:rgba(0,0,0,0.45)}
+
+    
+    .modal{
+      position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.45);z-index:20;
+    }
+    .modal .card{
+      width:360px; background:linear-gradient(180deg,#ffffff,#f6fffb);padding:18px;border-radius:12px;box-shadow:0 20px 40px rgba(2,6,23,0.25);
+    }
+    .card .top{display:flex;align-items:center;gap:12px}
+
+    /* Ocultar el selector de fecha en inputs readonly */
+    input[type="date"][readonly]::-webkit-calendar-picker-indicator {
+      display: none;
+      -webkit-appearance: none;
+    }
+
+    .card img{width:72px;height:72px;border-radius:8px;object-fit:cover;border:2px solid rgba(15,118,110,0.06)}
+    .card h3{margin:0;color:var(--verde-1)}
+    .barcode-canvas{display:flex;flex-direction:column;align-items:center;margin-top:12px}
+
+    @media (max-width:1080px){
+      .wrap{flex-direction:column;padding:16px}
+      .panel-form{width:100%}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrap" role="main" aria-label="Gestión de clientes - Cuerpo Sano">
+   
+    <div class="panel-form" aria-labelledby="titulo-form">
+      <h2 id="titulo-form">Registro / Edición de Cliente</h2>
+      <div class="muted">Completar los datos. El código de barras se genera a partir del DNI (puedes regenerarlo).</div>
+
+      <form id="formCliente" autocomplete="off" onsubmit="return false;">
+        <div class="row">
+          <div>
+            <label for="dni">DNI *</label>
+            <input id="dni" type="text" placeholder="Ej: 12345678" required>
+          </div>
+
+          <div>
+            <label for="codigoBarras">Código de Barras</label>
+            <div style="display:flex;gap:8px">
+              <input id="codigoBarras" type="text" readonly placeholder="Generar o usar CS+DNI">
+              <button type="button" class="secondary small" onclick="generarCodigoBarras()">Generar</button>
+            </div>
+            <div class="codigo-barra" id="vistaCodigoBarras" aria-hidden="true"></div>
+          </div>
+
+          <div>
+            <label for="nombre">Nombre *</label>
+            <input id="nombre" type="text" placeholder="Nombre" required>
+          </div>
+
+          <div>
+            <label for="apellido">Apellido *</label>
+            <input id="apellido" type="text" placeholder="Apellido" required>
+          </div>
+
+          <div>
+            <label for="fechaRegistro">Fecha de Registro</label>
+            <input id="fechaRegistro" type="date" readonly>
+          </div>
+
+          <div>
+            <label for="telefono">Teléfono</label>
+            <input id="telefono" type="text" placeholder="+54 ...">
+          </div>
+
+          <div class="full">
+            <label for="direccion">Dirección</label>
+            <input id="direccion" type="text" placeholder="Calle, número, ciudad">
+          </div>
+
+          <div>
+            <label for="email">Email</label>
+            <input id="email" type="email" placeholder="ejemplo@mail.com">
+          </div>
+
+          <div>
+            <label for="tipoMembresia">Tipo de Membresía</label>
+            <select id="tipoMembresia">
+              <option value="1">Básica</option>
+              <option value="2">Premium</option>
+              <option value="3">VIP</option>
+              <option value="4">Anual</option>
+            </select>
+          </div>
+
+          <!--<div>
+            <label for="descuento">Descuento (%)</label>
+            <input id="descuento" type="number" min="0" max="100" value="0">
+          </div>-->
+
+          <div class="full">
+            <label>Foto del Miembro</label>
+            <div style="display:flex;gap:8px">
+              <input id="fotoInput" type="file" accept="image/*">
+              <button type="button" class="secondary small" onclick="limpiarFoto()">Quitar</button>
+            </div>
+            <div class="photo-preview" id="photoPreview"><span class="muted">Sin foto</span></div>
+          </div>
+        </div>
+
+        <div class="controls full">
+          <button id="btnAgregar" onclick="onAgregar()">Agregar</button>
+          <button type="button" class="secondary" onclick="onActualizar()" id="btnActualizar" style="display:none">Guardar cambios</button>
+          <button type="button" class="secondary" onclick="limpiarFormulario()">Limpiar</button>
+        </div>
+      </form>
+    </div>
+
+   
+    <div class="panel-grid">
+      <div class="topbar">
+        <div style="display:flex;flex-direction:column">
+          <h2 style="margin:0;color:var(--verde-1)">Listado de Clientes</h2>
+          <div class="muted">Buscar, editar, eliminar e imprimir carnet</div>
+        </div>
+
+        <div class="searchbox">
+          <input id="buscar" placeholder="Buscar por DNI o Nombre..." oninput="renderTabla()" />
+          <button class="secondary" onclick="cargarEjemplo()">Cargar ejemplo</button>
+          <button class="secondary" onclick="vaciarTodo()">Vaciar todo</button>
+        </div>
+      </div>
+
+      <div style="overflow:auto">
+        <table aria-describedby="tabla-clientes">
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>DNI</th>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>Email</th>
+              <th>Membresía</th>
+              <th style="width:150px">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyClientes">
+            <tr><td class="empty" colspan="7">No hay clientes. Agregá uno usando el formulario.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalCarnet" class="modal" role="dialog" aria-modal="true" aria-hidden="true" onclick="cerrarModal(event)">
+    <div class="card" id="carnetCard" onclick="event.stopPropagation()">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="display:flex;gap:12px;align-items:center">
+          <img id="modalPhoto" src="" alt="Foto del miembro">
+          <div>
+            <h3 id="modalNombre">Nombre Apellido</h3>
+            <div id="modalDni" class="muted">DNI: 00000000</div>
+          </div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-weight:800;color:var(--verde-1)">Cuerpo Sano</div>
+          <div style="font-size:12px" class="muted">Gimnasio • Salud • Bienestar</div>
+        </div>
+      </div>
+
+      <div class="barcode-canvas" style="margin-top:12px">
+        <svg id="modalBarcode"></svg>
+        <div id="modalBarcodeText" style="margin-top:6px;color:#234;font-weight:700"></div>
+        <div id="qrcode" style="margin-top:12px"></div>
+      </div>
+
+      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+        <button onclick="imprimirCarnet()">Imprimir</button>
+        <button class="secondary" onclick="cerrarModal()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+
+const el = id => document.getElementById(id);
+const STORAGE_KEY = 'cs_clientes_v1';
+
+let clientes = [];
+let editIndex = -1;
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  cargarStorage();
+  renderTabla();
+  setFechaActual();
+  el('fotoInput').addEventListener('change', handleFotoChange);
+  
+  if(el('codigoBarras').value) actualizaVistaCodigo();
+});
+
+
+let photoDataUrl = null;
+function handleFotoChange(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ()=> {
+    photoDataUrl = reader.result;
+    actualizarPreviewFoto();
+  };
+  reader.readAsDataURL(file);
+}
+function actualizarPreviewFoto(){
+  const cont = el('photoPreview');
+  cont.innerHTML = '';
+  if(photoDataUrl){
+    const img = document.createElement('img');
+    img.src = photoDataUrl;
+    img.alt = 'Foto';
+    cont.appendChild(img);
+  } else {
+    cont.innerHTML = '<span class="muted">Sin foto</span>';
+  }
+}
+function limpiarFoto(){
+  photoDataUrl = null;
+  el('fotoInput').value = '';
+  actualizarPreviewFoto();
+}
+
+
+function generarCodigoBarras(){
+  const dni = el('dni').value.trim();
+  let codigo = '';
+  if(dni){
+    codigo = 'CS' + dni;
+  } else {
+    
+    codigo = 'CS' + Date.now().toString().slice(-8);
+  }
+  el('codigoBarras').value = codigo;
+  actualizaVistaCodigo();
+}
+
+function actualizaVistaCodigo(){
+  const txt = el('codigoBarras').value || '';
+  el('vistaCodigoBarras').textContent = txt;
+}
+
+function setFechaActual(){
+  const hoy = new Date();
+  const formatoISO = hoy.toISOString().split('T')[0];
+  el('fechaRegistro').value = formatoISO;
+}
+
+
+function validarCampos(){
+  const dni = el('dni').value.trim();
+  const nombre = el('nombre').value.trim();
+  const apellido = el('apellido').value.trim();
+  if(!dni || !nombre || !apellido) {
+    alert('Completar DNI, Nombre y Apellido (obligatorios).');
+    return false;
+  }
+  
+  if(editIndex === -1 && clientes.some(c=>c.dni === dni)){
+    alert('Ya existe un cliente con ese DNI.');
+    return false;
+  }
+  
+  if(editIndex !== -1){
+    const otherIndex = clientes.findIndex((c,i)=> c.dni === dni && i !== editIndex);
+    if(otherIndex !== -1){
+      alert('El DNI ingresado ya está en uso por otro cliente.');
+      return false;
+    }
+  }
+  return true;
+}
+
+function onAgregar(){
+  if(!validarCampos()) return;
+  const nuevo = leerFormulario();
+  clientes.push(nuevo);
+  guardarStorage();
+  renderTabla();
+  limpiarFormulario();
+}
+
+function onActualizar(){
+  if(editIndex === -1) return;
+  if(!validarCampos()) return;
+  const actualizado = leerFormulario();
+  clientes[editIndex] = actualizado;
+  guardarStorage();
+  renderTabla();
+  limpiarFormulario();
+  
+  el('btnAgregar').style.display = '';
+  el('btnActualizar').style.display = 'none';
+  editIndex = -1;
+}
+
+function leerFormulario(){
+  const codigo = el('codigoBarras').value.trim() || ('CS' + el('dni').value.trim());
+  return {
+    codigo,
+    dni: el('dni').value.trim(),
+    nombre: el('nombre').value.trim(),
+    apellido: el('apellido').value.trim(),
+    fechaRegistro: el('fechaRegistro').value,
+    telefono: el('telefono').value.trim(),
+    direccion: el('direccion').value.trim(),
+    email: el('email').value.trim(),
+    tipoMembresia: el('tipoMembresia').value,
+    descuento: Number(el('descuento').value || 0),
+    foto: photoDataUrl 
+  };
+}
+
+function editarCliente(i){
+  const c = clientes[i];
+  editIndex = i;
+  el('dni').value = c.dni;
+  el('codigoBarras').value = c.codigo;
+  el('nombre').value = c.nombre;
+  el('apellido').value = c.apellido;
+  setFechaActual(); // Al editar, mantenemos la fecha actual en el campo de registro
+  el('telefono').value = c.telefono || '';
+  el('direccion').value = c.direccion || '';
+  el('email').value = c.email || '';
+  el('tipoMembresia').value = c.tipoMembresia || '1';
+  el('descuento').value = c.descuento || 0;
+  photoDataUrl = c.foto || null;
+  actualizarPreviewFoto();
+  actualizaVistaCodigo();
+  
+  el('btnAgregar').style.display = 'none';
+  el('btnActualizar').style.display = '';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function eliminarCliente(i){
+  if(!confirm('¿Confirma eliminar este cliente?')) return;
+  clientes.splice(i,1);
+  guardarStorage();
+  renderTabla();
+}
+
+
+function verCarnet(i){
+  const c = clientes[i];
+  if(!c) return;
+  
+  el('modalNombre').textContent = c.nombre + ' ' + c.apellido;
+  el('modalDni').textContent = 'DNI: ' + c.dni;
+  el('modalPhoto').src = c.foto || 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200"><rect fill="#f0fff5" width="100%" height="100%"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#9bb" font-size="20">Sin foto</text></svg>`);
+ 
+  const svg = el('modalBarcode');
+  svg.innerHTML = '';
+  try{
+    JsBarcode(svg, c.codigo, {format:'CODE128',width:2,height:40,displayValue:false});
+  }catch(err){
+    
+    svg.innerHTML = '<text x="0" y="20">' + c.codigo + '</text>';
+  }
+  el('modalBarcodeText').textContent = c.codigo;
+  
+  const qnode = el('qrcode');
+  qnode.innerHTML = '';
+  const q = new QRCode(qnode, {
+    text: JSON.stringify({codigo:c.codigo,dni:c.dni,nombre:c.nombre}),
+    width: 96,
+    height: 96
+  });
+  
+  el('modalCarnet').style.display = 'flex';
+  el('modalCarnet').setAttribute('aria-hidden','false');
+}
+
+function cerrarModal(e){
+  if(e === undefined || e === null) {
+    el('modalCarnet').style.display = 'none';
+    el('modalCarnet').setAttribute('aria-hidden','true');
+    el('qrcode').innerHTML = '';
+    return;
+  }
+  
+  if(e.target === el('modalCarnet')) {
+    cerrarModal();
+  }
+}
+
+function imprimirCarnet(){
+  const contenido = el('carnetCard').outerHTML;
+  const w = window.open('', '_blank');
+  w.document.write(`
+    <html><head>
+      <title>Carnet - Cuerpo Sano</title>
+      <style>
+        body{font-family:Inter,Arial;margin:20px;background:#f7fff9}
+        .card{width:360px;padding:16px;border-radius:10px;background:#fff;box-shadow:0 8px 20px rgba(0,0,0,0.08)}
+      </style>
+    </head><body>
+      ${contenido}
+      <script>
+        window.onload = function(){
+          // re-render barcode using JsBarcode in printed window
+          setTimeout(()=>{window.print();},300);
+        }
+      <\/script>
+    </body></html>
+  `);
+  w.document.close();
+}
+function renderTabla(){
+  const tbody = el('tbodyClientes');
+  const q = el('buscar').value.trim().toLowerCase();
+  tbody.innerHTML = '';
+  const filtrados = clientes.filter(c=>{
+    if(!q) return true;
+    return c.dni.toLowerCase().includes(q) || c.nombre.toLowerCase().includes(q) || c.apellido.toLowerCase().includes(q);
+  });
+
+  if(filtrados.length === 0){
+    tbody.innerHTML = '<tr><td class="empty" colspan="7">No se encontraron clientes.</td></tr>';
+    return;
+  }
+
+  filtrados.forEach((c,i)=>{
+    
+    const realIndex = clientes.findIndex(x=>x.codigo === c.codigo && x.dni === c.dni);
+    const tr = document.createElement('tr');
+
+    tr.innerHTML = `
+      <td>${escapeHtml(c.codigo)}</td>
+      <td>${escapeHtml(c.dni)}</td>
+      <td>${escapeHtml(c.nombre)}</td>
+      <td>${escapeHtml(c.apellido)}</td>
+      <td>${escapeHtml(c.email || '-')}</td>
+      <td>${tipoText(c.tipoMembresia)}</td>
+      <td class="table-actions">
+        <button class="edit" title="Editar" onclick="editarCliente(${realIndex})">Editar</button>
+        <button class="print" title="Ver/Imprimir Carnet" onclick="verCarnet(${realIndex})">Carnet</button>
+        <button class="del" title="Eliminar" onclick="eliminarCliente(${realIndex})">Eliminar</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function tipoText(val){
+  switch(String(val)){
+    case '1': return 'Básica';
+    case '2': return 'Premium';
+    case '3': return 'VIP';
+    case '4': return 'Anual';
+    default: return 'N/A';
+  }
+}
+function guardarStorage(){
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(clientes));
+  }catch(e){
+    alert('Error guardando localmente: ' + e.message);
+  }
+}
+
+function cargarStorage(){
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if(!raw) return;
+  try{
+    clientes = JSON.parse(raw) || [];
+  }catch(e){
+    clientes = [];
+  }
+}
+
+
+function limpiarFormulario(){
+  editIndex = -1;
+  // Limpiamos campos manualmente para evitar borrar la fecha de registro
+  el('dni').value = '';
+  el('nombre').value = '';
+  el('apellido').value = '';
+  el('telefono').value = '';
+  el('direccion').value = '';
+  el('email').value = '';
+  el('tipoMembresia').value = '1';
+  el('descuento').value = 0;
+  photoDataUrl = null;
+  actualizarPreviewFoto();
+  el('codigoBarras').value = '';
+  el('vistaCodigoBarras').textContent = '';
+  el('btnAgregar').style.display = '';
+  el('btnActualizar').style.display = 'none';
+  setFechaActual();
+}
+
+
+function escapeHtml(s){
+  if(!s) return '';
+  return String(s).replace(/[&<>"']/g, function(m){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]); });
+}
+
+function cargarEjemplo(){
+  const demo = [
+    {codigo:'CS99887766', dni:'99887766', nombre:'Ana', apellido:'Martínez', email:'ana@mail.com', tipoMembresia:'2', descuento:0, foto:null},
+    {codigo:'CS55443322', dni:'55443322', nombre:'Pedro', apellido:'Rodríguez', email:'pedro@mail.com', tipoMembresia:'3', descuento:10, foto:null},
+    {codigo:'CS12345678', dni:'12345678', nombre:'Juan', apellido:'Pérez', email:'juan@mail.com', tipoMembresia:'1', descuento:0, foto:null},
+  ];
+  clientes = demo.concat(clientes);
+  guardarStorage();
+  renderTabla();
+}
+
+function vaciarTodo(){
+  if(confirm('Eliminar todos los clientes guardados localmente?')) {
+    clientes = [];
+    guardarStorage();
+    renderTabla();
+  }
+}
+
+
+renderTabla();
+
+</script>
+</body>
+</html>

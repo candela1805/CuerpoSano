@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reportes y Estadísticas - Gimnasio Cuerpo Sano</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="../assets/css/reportesEstadisticas.css">
+</head>
+
+<body>
+  <header>
+    <h1>📊 Reportes y Estadísticas</h1>
+    <p>Sistema de Gestión - Gimnasio Cuerpo Sano</p>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <div class="card-header">
+        <h2>🔎 Configuración del Reporte</h2>
+      </div>
+      <div class="card-body">
+        <form id="reportForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="tipoReporte">Tipo de Reporte</label>
+              <select id="tipoReporte" name="tipoReporte" required>
+                <option value="ingresos">💰 Ingresos (Pagos)</option>
+                <option value="asistencia">🧾 Asistencia de Miembros</option>
+                <option value="inscripciones">📝 Inscripciones a Clases</option>
+                <option value="membresias">🪪 Membresías Activas</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="periodo">Periodo</label>
+              <select id="periodo" name="periodo">
+                <option value="diario">Últimas 24 horas</option>
+                <option value="semanal">Última semana</option>
+                <option value="mensual" selected>Último mes</option>
+                <option value="trimestral">Último trimestre</option>
+                <option value="anual">Último año</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="fechaInicio">Fecha Inicio</label>
+              <input type="date" id="fechaInicio" name="fechaInicio" required />
+            </div>
+
+            <div class="form-group">
+              <label for="fechaFin">Fecha Fin</label>
+              <input type="date" id="fechaFin" name="fechaFin" required />
+            </div>
+          </div>
+
+          <div class="button-group">
+            <button type="button" class="btn btn-primary" id="btnGenerar">✅ Generar Reporte</button>
+            <button type="button" class="btn btn-secondary" id="btnExportar">⬇️ Exportar CSV</button>
+            <button type="button" class="btn btn-print" id="btnImprimir">🖨️ Imprimir</button>
+            <button type="reset" class="btn btn-clear" id="btnLimpiar">🧹 Limpiar</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section class="metrics-container">
+      <div class="metric-card">
+        <div class="metric-icon">💵</div>
+        <div class="metric-label">TOTAL</div>
+        <div class="metric-value" id="metricTotal">$0.00</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon">📊</div>
+        <div class="metric-label">REGISTROS</div>
+        <div class="metric-value" id="metricCount">0</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon">📈</div>
+        <div class="metric-label">PROMEDIO</div>
+        <div class="metric-value" id="metricAvg">$0.00</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-icon">🔄</div>
+        <div class="metric-label">VARIACIÓN</div>
+        <div class="metric-value" id="metricVariation">0%</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-header">
+        <h2>📑 Datos Detallados</h2>
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="🔎 Buscar en resultados..." />
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table id="tablaResultados">
+            <thead>
+              <tr>
+                <th>FECHA</th>
+                <th>DETALLE</th>
+                <th>VALOR</th>
+                <th>ESTADO</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="4" class="no-data">
+                  <div class="empty-state">
+                    <div class="empty-icon">📊</div>
+                    <p>No hay datos generados</p>
+                    <small>Selecciona un tipo de reporte y haz clic en “Generar Reporte”.</small>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="charts-grid">
+      <div class="card">
+        <div class="card-header">
+          <h2>🧩 Distribución por Categoría</h2>
+        </div>
+        <div class="card-body">
+          <div class="chart-container">
+            <canvas id="graficoDistribucion"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2>📈 Evolución Temporal</h2>
+        </div>
+        <div class="card-body">
+          <div class="chart-container">
+            <canvas id="graficoTemporal"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Gimnasio Cuerpo Sano - Sistema de Gestión</p>
+  </footer>
+
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="spinner"></div>
+    <p>Generando reporte...</p>
+  </div>
+
+  <script src="../assets/js/reportes_estadisticas.js" defer></script>
+</body>
+</html>
+
+

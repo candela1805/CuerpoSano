@@ -1,0 +1,124 @@
+:root {
+  --verde-oscuro: #0f766e;
+  --verde-claro: #26a69a;
+  --gris-claro: #e0f2f1;
+  --borde: #cfd8dc;
+  --texto: #333;
+  --blanco: #fff;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg,#d9f7ee 0%, #e6f7ff 50%, #f7ffe4 100%);
+  color: var(--texto);
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+
+.wrap {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 20px;
+  max-width: 1300px;
+  width: 100%;
+}
+
+.panel-form, .panel-grid {
+  background: var(--blanco);
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  padding: 25px;
+}
+
+h2 {
+  color: var(--verde-oscuro);
+  margin-top: 0;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 12px;
+}
+
+.full { grid-column: span 2; }
+.inline { display: flex; gap: 8px; align-items: center; }
+
+label {
+  font-weight: 600;
+  color: var(--texto);
+  font-size: 0.9rem;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--borde);
+  background: #f9f9f9;
+  font-size: 0.9rem;
+  color: var(--texto);
+}
+
+button {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+button:hover { opacity: 0.9; transform: scale(1.02); }
+button.secondary { background: #eceff1; color: #333; }
+button.small { padding: 6px 10px; font-size: 0.8rem; }
+button { background: var(--verde-claro); color: #fff; }
+
+.photo-preview {
+  border: 1px dashed var(--borde);
+  border-radius: 6px;
+  padding: 15px;
+  text-align: center;
+  color: #777;
+  font-size: 0.85rem;
+  min-height: 60px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+input#buscar {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--borde);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+th {
+  background: var(--gris-claro);
+  color: var(--verde-oscuro);
+  text-align: left;
+  padding: 10px;
+}
+
+td {
+  padding: 10px;
+  border-bottom: 1px solid #e0f2f1;
+}
+
+.empty {
+  text-align: center;
+  color: #888;
+  padding: 15px;
+}

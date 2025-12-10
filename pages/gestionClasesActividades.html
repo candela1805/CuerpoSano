@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestión de Clases y Actividades - Cuerpo Sano</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: linear-gradient(135deg, #d9f7ee 0%, #e6f7ff 50%, #f7ffe4 100%);
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+            color: #123;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0f766e, #26a69a);
+            color: white;
+            padding: 25px 30px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 24px rgba(15, 118, 110, 0.25);
+        }
+
+        header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #555;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn.active {
+            background: #26a69a;
+            color: white;
+            border-color: #26a69a;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .main-layout {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            height: fit-content;
+        }
+
+        .form-container h2 {
+            color: #0f766e;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            background: #fafafa;
+            transition: all 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #26a69a;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(38, 166, 154, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        button {
+            padding: 11px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: #26a69a;
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: #00897b;
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #26a69a;
+            border: 2px solid #26a69a;
+            flex: 1;
+        }
+
+        .btn-secondary:hover {
+            background: #f0f9f8;
+        }
+
+        .btn-horarios-top {
+            background: #ff9800;
+            color: white;
+            padding: 12px 24px;
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-horarios-top:hover {
+            background: #f57c00;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .table-header h2 {
+            color: #0f766e;
+            font-size: 20px;
+        }
+
+        .search-box {
+            padding: 10px 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 280px;
+            font-size: 14px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th {
+            background: linear-gradient(90deg, #ecfff7, #f7ffff);
+            color: #0f766e;
+            font-weight: 700;
+            padding: 14px 12px;
+            text-align: left;
+            border-bottom: 2px solid #26a69a;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        tr:hover {
+            background: #fafffe;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-danger {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .badge-warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 13px;
+            border-radius: 6px;
+        }
+
+        .btn-edit {
+            background: #4caf50;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #f44336;
+            color: white;
+        }
+
+        .btn-view {
+            background: #2196F3;
+            color: white;
+        }
+
+        .btn-id {
+            background: #9c27b0;
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            max-width: 900px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            color: #0f766e;
+            font-size: 22px;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+        }
+
+        .horario-item {
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border-left: 4px solid #26a69a;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1.5fr;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .horario-item strong {
+            color: #0f766e;
+        }
+
+        .info-calculada {
+            background: #e3f2fd;
+            border-left: 4px solid #2196F3;
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 13px;
+            color: #1565c0;
+        }
+
+        .btn-print {
+            background: #673ab7;
+            color: white;
+            padding: 10px 20px;
+            margin-left: 10px;
+        }
+
+        .btn-print:hover {
+            background: #5e35b1;
+        }
+
+        /* Estilos para la credencial */
+        .credencial {
+            width: 350px;
+            background: linear-gradient(135deg, #0f766e, #26a69a);
+            border-radius: 15px;
+            padding: 25px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin: 0 auto;
+        }
+
+        .credencial-header {
+            text-align: center;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .credencial-header h2 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .credencial-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .credencial-foto {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: white;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: #0f766e;
+        }
+
+        .credencial-info {
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .credencial-info-item {
+            margin-bottom: 12px;
+        }
+
+        .credencial-info-item label {
+            font-size: 12px;
+            opacity: 0.8;
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .credencial-info-item strong {
+            font-size: 16px;
+            display: block;
+        }
+
+        .credencial-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            opacity: 0.7;
+        }
+
+        @media (max-width: 1024px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .horario-item {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #26a69a;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .modal-content, .modal-content * {
+                visibility: visible;
+            }
+            .modal-content {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                max-width: 100%;
+                box-shadow: none;
+                padding: 20px;
+            }
+            .modal-header button,
+            .btn-print,
+            .close-modal {
+                display: none !important;
+            }
+            .credencial {
+                page-break-after: avoid;
+                box-shadow: none;
+                border: 2px solid #0f766e;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏋️ Gestión de Clases y Actividades</h1>
+            <p>Sistema integral para administrar actividades, clases, entrenadores y horarios</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('actividades', this)">📋 Actividades</button>
+            <button class="tab-btn" onclick="switchTab('clases', this)">🎯 Clases</button>
+            <button class="tab-btn" onclick="switchTab('entrenadores', this)">👨‍🏫 Entrenadores</button>
+        </div>
+
+        <!-- TAB: ACTIVIDADES -->
+        <div id="tab-actividades" class="tab-content active">
+            <div class="main-layout">
+                <div class="form-container">
+                    <h2 id="form-actividad-title">Nueva Actividad</h2>
+                    <form id="form-actividad">
+                        <input type="hidden" id="act-id">
+                        <div>
+                            <label>Nombre *</label>
+                            <input type="text" id="act-nombre" required placeholder="Ej: Spinning">
+                        </div>
+                        <div>
+                            <label>Descripción *</label>
+                            <textarea id="act-descripcion" rows="3" required placeholder="Descripción de la actividad"></textarea>
+                        </div>
+                        <div>
+                            <label>Duración (minutos) *</label>
+                            <input type="number" id="act-duracion" min="1" required placeholder="60">
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="act-activo" checked>
+                            <label for="act-activo" style="margin: 0;">Actividad activa</label>
+                        </div>
+                        <div class="btn-group">
+                            <button type="submit" class="btn-primary">Guardar</button>
+                            <button type="button" class="btn-secondary" onclick="limpiarFormActividad()">Limpiar</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="table-container">
+                    <div class="table-header">
+                        <h2>Listado de Actividades</h2>
+                        <input type="text" class="search-box" id="search-actividades" placeholder="🔍 Buscar actividades...">
+                    </div>
+                    <table id="tabla-actividades">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th>Duración</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td colspan="6" class="loading">Cargando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: CLASES -->
+        <div id="tab-clases" class="tab-content">
+            <button class="btn-horarios-top" onclick="verTodosLosHorarios()">
+                📅 Ver Horarios e Imprimir
+            </button>
+
+            <div class="main-layout">
+                <div class="form-container">
+                    <h2 id="form-clase-title">Nueva Clase</h2>
+                    <form id="form-clase">
+                        <input type="hidden" id="clase-id">
+                        <div>
+                            <label>Nombre de la Clase *</label>
+                            <input type="text" id="clase-nombre" required placeholder="Ej: Yoga Matutino">
+                        </div>
+                        <div>
+                            <label>Actividad *</label>
+                            <select id="clase-actividad" required>
+                                <option value="">Seleccione actividad...</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Entrenador *</label>
+                            <select id="clase-entrenador" required>
+                                <option value="">Seleccione entrenador...</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Hora Inicio * (Entre 07:00 y 23:00)</label>
+                            <input type="time" id="clase-hora-inicio" required min="07:00" max="23:00">
+                        </div>
+                        <div class="info-calculada">
+                            ℹ️ La hora de fin se calculará automáticamente según la duración de la actividad seleccionada
+                        </div>
+                        <div>
+                            <label>Capacidad *</label>
+                            <input type="number" id="clase-capacidad" min="1" required placeholder="20">
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="clase-activo" checked>
+                            <label for="clase-activo" style="margin: 0;">Clase activa</label>
+                        </div>
+                        <div class="btn-group">
+                            <button type="submit" class="btn-primary">Guardar</button>
+                            <button type="button" class="btn-secondary" onclick="limpiarFormClase()">Limpiar</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="table-container">
+                    <div class="table-header">
+                        <h2>Listado de Clases</h2>
+                        <input type="text" class="search-box" id="search-clases" placeholder="🔍 Buscar clases...">
+                    </div>
+                    <table id="tabla-clases">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Actividad</th>
+                                <th>Entrenador</th>
+                                <th>Horario</th>
+                                <th>Capacidad</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td colspan="8" class="loading">Cargando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: ENTRENADORES -->
+        <div id="tab-entrenadores" class="tab-content">
+            <div class="main-layout">
+                <div class="form-container">
+                    <h2 id="form-entrenador-title">Nuevo Entrenador</h2>
+                    <form id="form-entrenador">
+                        <input type="hidden" id="ent-id">
+                        <div>
+                            <label>Nombre Completo *</label>
+                            <input type="text" id="ent-nombre" required placeholder="Ej: Juan Pérez">
+                        </div>
+                        <div>
+                            <label>Especialidad</label>
+                            <input type="text" id="ent-especialidad" placeholder="Ej: Yoga y Pilates">
+                        </div>
+                        <div>
+                            <label>Fecha Certificación (Desde año 2000)</label>
+                            <input type="date" id="ent-fecha-cert" min="2000-01-01">
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="ent-certificado">
+                            <label for="ent-certificado" style="margin: 0;">Certificado</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="ent-activo" checked>
+                            <label for="ent-activo" style="margin: 0;">Activo</label>
+                        </div>
+                        <div class="btn-group">
+                            <button type="submit" class="btn-primary">Guardar</button>
+                            <button type="button" class="btn-secondary" onclick="limpiarFormEntrenador()">Limpiar</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="table-container">
+                    <div class="table-header">
+                        <h2>Listado de Entrenadores</h2>
+                        <input type="text" class="search-box" id="search-entrenadores" placeholder="🔍 Buscar entrenadores...">
+                    </div>
+                    <table id="tabla-entrenadores">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Especialidad</th>
+                                <th>Certificación</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td colspan="6" class="loading">Cargando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: Horarios de Clases -->
+        <div id="modal-horarios-todos" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>📅 Horarios de Clases</h3>
+                    <div>
+                        <button class="btn-print" onclick="window.print()">🖨️ Imprimir</button>
+                        <button class="close-modal" onclick="cerrarModal('modal-horarios-todos')">&times;</button>
+                    </div>
+                </div>
+                <div id="modal-horarios-todos-contenido"></div>
+            </div>
+        </div>
+
+        <!-- MODAL: Credencial de Entrenador -->
+        <div id="modal-credencial" class="modal">
+            <div class="modal-content" style="max-width: 400px;">
+                <div class="modal-header">
+                    <h3>Credencial de Entrenador</h3>
+                    <div>
+                        <button class="btn-print" onclick="window.print()">🖨️ Imprimir</button>
+                        <button class="close-modal" onclick="cerrarModal('modal-credencial')">&times;</button>
+                    </div>
+                </div>
+                <div id="credencial-contenido"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = '../api/clases_actividades.php';
+        
+        let actividades = [];
+        let clases = [];
+        let entrenadores = [];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            cargarActividades();
+            cargarClases();
+            cargarEntrenadores();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            document.getElementById('form-actividad').addEventListener('submit', guardarActividad);
+            document.getElementById('form-clase').addEventListener('submit', guardarClase);
+            document.getElementById('form-entrenador').addEventListener('submit', guardarEntrenador);
+            document.getElementById('search-actividades').addEventListener('input', filtrarActividades);
+            document.getElementById('search-clases').addEventListener('input', filtrarClases);
+            document.getElementById('search-entrenadores').addEventListener('input', filtrarEntrenadores);
+        }
+
+        function switchTab(tabName, button) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById('tab-' + tabName).classList.add('active');
+            button.classList.add('active');
+
+            if (tabName === 'actividades') cargarActividades();
+            if (tabName === 'clases') cargarClases();
+            if (tabName === 'entrenadores') cargarEntrenadores();
+        }
+
+        // ============================================
+        // FUNCIONES DE ACTIVIDADES
+        // ============================================
+
+        async function cargarActividades() {
+            try {
+                const response = await fetch(`${API_URL}?action=listar_actividades`);
+                const data = await response.json();
+                if (data.success) {
+                    actividades = data.data;
+                    renderizarActividades(actividades);
+                    cargarActividadesEnSelect();
+                } else {
+                    mostrarError('Error al cargar actividades');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarError('Error de conexión al cargar actividades');
+            }
+        }
+
+        function renderizarActividades(datos) {
+            const tbody = document.querySelector('#tabla-actividades tbody');
+            if (datos.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No hay actividades registradas</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = datos.map(act => `
+                <tr>
+                    <td>${act.idActividad}</td>
+                    <td><strong>${act.nombre}</strong></td>
+                    <td>${act.descripcion}</td>
+                    <td>${act.duracion} min</td>
+                    <td><span class="badge ${act.activo == 1 ? 'badge-success' : 'badge-danger'}">
+                        ${act.activo == 1 ? 'Activa' : 'Inactiva'}
+                    </span></td>
+                    <td class="action-buttons">
+                        <button class="btn-sm btn-edit" onclick="editarActividad(${act.idActividad})">Editar</button>
+                        <button class="btn-sm btn-delete" onclick="eliminarActividad(${act.idActividad})">Eliminar</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function guardarActividad(e) {
+            e.preventDefault();
+            const idActividad = document.getElementById('act-id').value;
+            const data = {
+                idActividad: idActividad || null,
+                nombre: document.getElementById('act-nombre').value,
+                descripcion: document.getElementById('act-descripcion').value,
+                duracion: parseInt(document.getElementById('act-duracion').value),
+                activo: document.getElementById('act-activo').checked ? 1 : 0
+            };
+
+            const action = idActividad ? 'actualizar_actividad' : 'crear_actividad';
+
+            try {
+                const response = await fetch(`${API_URL}?action=${action}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    mostrarExito(result.message);
+                    limpiarFormActividad();
+                    cargarActividades();
+                } else {
+                    mostrarError(result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarError('Error al guardar actividad');
+            }
+        }
+
+        function editarActividad(id) {
+            const actividad = actividades.find(a => a.idActividad == id);
+            if (!actividad) return;
+
+            document.getElementById('act-id').value = actividad.idActividad;
+            document.getElementById('act-nombre').value = actividad.nombre;
+            document.getElementById('act-descripcion').value = actividad.descripcion;
+            document.getElementById('act-duracion').value = actividad.duracion;
+            document.getElementById('act-activo').checked = actividad.activo == 1;
+            document.getElementById('form-actividad-title').textContent = 'Editar Actividad';
+            document.querySelector('#form-actividad button[type="submit"]').textContent = 'Actualizar';
+        }
+
+        async function eliminarActividad(id) {
+            if (!confirm('¿Está seguro de eliminar esta actividad?')) return;
+
+            try {
+                const response = await fetch(`${API_URL}?action=eliminar_actividad`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ idActividad: id })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    mostrarExito(result.message);
+                    cargarActividades();
+                } else {
+                    mostrarError(result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarError('Error al eliminar actividad');
+            }
+        }
+
+        function limpiarFormActividad() {
+            document.getElementById('form-actividad').reset();
+            document.getElementById('act-id').value = '';
+            document.getElementById('act-activo').checked = true;
+            document.getElementById('form-actividad-title').textContent = 'Nueva Actividad';
+            document.querySelector('#form-actividad button[type="submit"]').textContent = 'Guardar';
+        }
+
+        function filtrarActividades(e) {
+            const termino = e.target.value.toLowerCase();
+            const filtrados = actividades.filter(act =>
+                act.nombre.toLowerCase().includes(termino) ||
+                act.descripcion.toLowerCase().includes(termino)
+            );
+            renderizarActividades(filtrados);
+        }
+
+        // ============================================
+        // FUNCIONES DE CLASES
+        // ============================================
+
+        async function cargarClases() {
+            try {
+                const response = await fetch(`${API_URL}?action=listar_clases`);
+                const data = await response.json();
+                if (data.success) {
+                    clases = data.data;
+                    renderizarClases(clases);
+                } else {
+                    mostrarError('Error al cargar clases');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarError('Error de conexión al cargar clases');
+            }
+        }
+
+        function renderizarClases(datos) {
+            const tbody = document.querySelector('#tabla-clases tbody');
+            if (datos.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="empty-state">No hay clases registradas</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = datos.map(clase => `
+                <tr>
+                    <td>${clase.idClase}</td>
+                    <td><strong>${clase.nombre}</strong></td>
+                    <td>${clase.actividad}</td>
+                    <td>${clase.entrenador}</td>
+                    <td>${clase.horaInicio} - ${clase.horaFin}</td>
+                    <td>${clase.capacidad}</td>
+                    <td><span class="badge ${clase.activo == 1 ? 'badge-success' : 'badge-danger'}">
+                        ${clase.activo == 1 ? 'Activa' : 'Inactiva'}
+                    </span></td>
+                    <td class="action-buttons">
+                        <button class="btn-sm btn-edit" onclick="editarClase(${clase.idClase})">Editar</button>
+                        <button class="btn-sm btn-delete" onclick="eliminarClase(${clase.idClase})">Eliminar</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function calcularHoraFin(horaInicio, duracionMinutos) {
+            if (!horaInicio || !duracionMinutos) return '';
+            
+            const [horas, minutos] = horaInicio.split(':').map(Number);
+            let totalMinutos = horas * 60 + minutos + duracionMinutos;
+            
+            let horaFin = Math.floor(totalMinutos / 60);
+            let minutosFin = totalMinutos % 60;
+            
+            return `${String(horaFin).padStart(2, '0')}:${String(minutosFin).padStart(2, '0')}:00`;
+        }
+
+        async function guardarClase(e) {
+            e.preventDefault();
+            
+            const horaInicio = document.getElementById('clase-hora-inicio').value;
+            const idActividad = parseInt(document.getElementById('clase-actividad').value);
+            
+            if (horaInicio < '07:00' || horaInicio > '23:00') {
+                mostrarError('La hora de inicio debe estar entre las 07:00 y las 23:00');
+                return;
+            }
+            
+            const actividad = actividades.find(a => a.idActividad == idActividad);
+            if (!actividad) {
+                mostrarError('Actividad no encontrada');
+                return;
+            }
+            
+            const horaFin = calcularHoraFin(horaInicio, actividad.duracion);
+            
+            if (horaFin > '23:00:00') {
+                mostrarError('La clase terminaría después de las 23:00. Seleccione una hora de inicio más temprana.');
+                return;
+            }
+            
+            const idClase = document.getElementById('clase-id').value;
+            const data = {
+                idClase: idClase || null,
+                nombre: document.getElementById('clase-nombre').value,
+                idActividad: idActividad,
+                idEntrenador: parseInt(document.getElementById('clase-entrenador').value),
+                horaInicio: horaInicio + ':00',
+                horaFin: horaFin,
+                capacidad: parseInt(document.getElementById('clase-capacidad').value),
+                activo: document.getElementById('clase-activo').checked ? 1 : 0
+            };
+
+            const action = idClase ? 'actualizar_clase' : 'crear_clase';
+
+            try {
+                const response = await fetch(`${API_URL}?action=${action}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    mostrarExito(result.message);
+                    limpiarFormClase();
+                    cargarClases();
+                } else {
+                    mostrarError(result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarError('Error al guardar clase');
+            }
+        }
+
+        function editarClase(id) {
+            const clase = clases.find(c => c.idClase == id);
+            if (!clase) return;
+
+            document.getElementById('clase-id').value = clase.idClase;
+            document.getElementById('clase-nombre').value = clase.nombre;
+            document.getElementById('clase-actividad').value = clase.idActividad;
+            document.getElementById('clase-entrenador').value = clase.idEntrenador;
+            document.getElementById('clase-hora-inicio').value = clase.horaInicio.substring(0, 5);
+            document.getElementById('clase-capacidad').value = clase.capacidad;
+            document.getElementById('clase-activo').checked = clase.activo == 1;
+            document.getElementById('form-clase-title').textContent = 'Editar Clase';
+            document.querySelector('#form-clase button[type="submit"]').textContent = 'Actualizar';
+        }
+
+        async function eliminarClase(id) {
+            if (!confirm('¿Está seguro de eliminar esta clase?')) return;
+
+            try {
+                const response = await fetch(`${API_URL}?action=eliminar_clase`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ idClase: id })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    mostrarExito(result.message);
+                    cargarClases();
+                } else {
+                    mostrarError(result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarError('Error al eliminar clase');
+            }
+        }
+
+        function limpiarFormClase() {
+            document.getElementById('form-clase').reset();
+            document.getElementById('clase-id').value = '';
+            document.getElementById('clase-activo').checked = true;
+            document.getElementById('form-clase-title').textContent = 'Nueva Clase';
+            document.querySelector('#form-clase button[type="submit"]').textContent = 'Guardar';
+        }
+
+        function filtrarClases(e) {
+            const termino = e.target.value.toLowerCase();
+            const filtrados = clases.filter(clase =>
+                clase.nombre.toLowerCase().includes(termino) ||
+                clase.actividad.toLowerCase().includes(termino) ||
+                clase.entrenador.toLowerCase().includes(termino)
+            );
+            renderizarClases(filtrados);
+        }
+
+        function verTodosLosHorarios() {
+            const contenido = document.getElementById('modal-horarios-todos-contenido');
+            
+            if (clases.length === 0) {
+                contenido.innerHTML = '<p class="empty-state">No hay clases registradas</p>';
+            } else {
+                contenido.innerHTML = `
+                    <div style="margin-bottom: 20px;">
+                        <strong>Fecha de generación:</strong> ${new Date().toLocaleString('es-ES')}
+                    </div>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: linear-gradient(90deg, #ecfff7, #f7ffff);">
+                                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #26a69a; color: #0f766e;">Clase</th>
+                                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #26a69a; color: #0f766e;">Actividad</th>
+                                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #26a69a; color: #0f766e;">Horario</th>
+                                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #26a69a; color: #0f766e;">Entrenador</th>
+                                <th style="padding: 12px; text-align: left; border-bottom: 2px solid #26a69a; color: #0f766e;">Capacidad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${clases.filter(c => c.activo == 1).map(clase => `
+                                <tr style="border-bottom: 1px solid #f0f0f0;">
+                                    <td style="padding: 12px;"><strong>${clase.nombre}</strong></td>
+                                    <td style="padding: 12px;">${clase.actividad}</td>
+                                    <td style="padding: 12px;">${clase.horaInicio} - ${clase.horaFin}</td>
+                                    <td style="padding: 12px;">${clase.entrenador}</td>
+                                    <td style="padding: 12px;">${clase.capacidad} personas</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                `;
+            }
+            
+            abrirModal('modal-horarios-todos');
+        }
+
+        // ============================================
+        // FUNCIONES DE ENTRENADORES
+        // ============================================
+
+        async function cargarEntrenadores() {
+            try {
+                const response = await fetch(`${API_URL}?action=listar_entrenadores`);
+                const data = await response.json();
+                if (data.success) {
+                    entrenadores = data.data;
+                    renderizarEntrenadores(entrenadores);
+                    cargarEntrenadoresEnSelect();
+                } else {
+                    mostrarError('Error al cargar entrenadores');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarError('Error de conexión al cargar entrenadores');
+            }
+        }
+
+        function renderizarEntrenadores(datos) {
+            const tbody = document.querySelector('#tabla-entrenadores tbody');
+            if (datos.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="empty-state">No hay entrenadores registrados</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = datos.map(ent => `
+                <tr>
+                    <td>${ent.idEntrenador}</td>
+                    <td><strong>${ent.nombre}</strong></td>
+                    <td>${ent.especialidad || 'N/A'}</td>
+                    <td>
+                        <span class="badge ${ent.certificacion == 1 ? 'badge-success' : 'badge-warning'}">
+                            ${ent.certificacion == 1 ? 'Certificado' : 'No certificado'}
+                        </span>
+                        ${ent.certificacion == 1 && ent.fechaCertificacion ? `<br><small>${ent.fechaCertificacion}</small>` : ''}
+                    </td>
+                    <td><span class="badge ${ent.activo == 1 ? 'badge-success' : 'badge-danger'}">
+                        ${ent.activo == 1 ? 'Activo' : 'Inactivo'}
+                    </span></td>
+                    <td class="action-buttons">
+                        <button class="btn-sm btn-id" onclick="imprimirCredencial(${ent.idEntrenador})">🆔 ID</button>
+                        <button class="btn-sm btn-edit" onclick="editarEntrenador(${ent.idEntrenador})">Editar</button>
+                        <button class="btn-sm btn-delete" onclick="eliminarEntrenador(${ent.idEntrenador})">Eliminar</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function guardarEntrenador(e) {
+            e.preventDefault();
+            
+            const fechaCert = document.getElementById('ent-fecha-cert').value;
+            if (fechaCert) {
+                const año = new Date(fechaCert).getFullYear();
+                if (año < 2000) {
+                    mostrarError('El año de certificación debe ser mayor o igual a 2000');
+                    return;
+                }
+            }
+            
+            const idEntrenador = document.getElementById('ent-id').value;
+            const data = {
+                idEntrenador: idEntrenador || null,
+                nombre: document.getElementById('ent-nombre').value,
+                especialidad: document.getElementById('ent-especialidad').value || null,
+                certificacion: document.getElementById('ent-certificado').checked ? 1 : 0,
+                fechaCertificacion: fechaCert || null,
+                activo: document.getElementById('ent-activo').checked ? 1 : 0
+            };
+
+            const action = idEntrenador ? 'actualizar_entrenador' : 'crear_entrenador';
+
+            try {
+                const response = await fetch(`${API_URL}?action=${action}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    mostrarExito(result.message);
+                    limpiarFormEntrenador();
+                    cargarEntrenadores();
+                } else {
+                    mostrarError(result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarError('Error al guardar entrenador');
+            }
+        }
+
+        function editarEntrenador(id) {
+            const entrenador = entrenadores.find(e => e.idEntrenador == id);
+            if (!entrenador) return;
+
+            document.getElementById('ent-id').value = entrenador.idEntrenador;
+            document.getElementById('ent-nombre').value = entrenador.nombre;
+            document.getElementById('ent-especialidad').value = entrenador.especialidad || '';
+            document.getElementById('ent-certificado').checked = entrenador.certificacion == 1;
+            document.getElementById('ent-fecha-cert').value = entrenador.fechaCertificacion || '';
+            document.getElementById('ent-activo').checked = entrenador.activo == 1;
+            document.getElementById('form-entrenador-title').textContent = 'Editar Entrenador';
+            document.querySelector('#form-entrenador button[type="submit"]').textContent = 'Actualizar';
+        }
+
+        async function eliminarEntrenador(id) {
+            if (!confirm('¿Está seguro de eliminar este entrenador?')) return;
+
+            try {
+                const response = await fetch(`${API_URL}?action=eliminar_entrenador`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ idEntrenador: id })
+                });
+
+                const result = await response.json();
+                if (result.success) {
+                    mostrarExito(result.message);
+                    cargarEntrenadores();
+                } else {
+                    mostrarError(result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                mostrarError('Error al eliminar entrenador');
+            }
+        }
+
+        function limpiarFormEntrenador() {
+            document.getElementById('form-entrenador').reset();
+            document.getElementById('ent-id').value = '';
+            document.getElementById('ent-activo').checked = true;
+            document.getElementById('form-entrenador-title').textContent = 'Nuevo Entrenador';
+            document.querySelector('#form-entrenador button[type="submit"]').textContent = 'Guardar';
+        }
+
+        function filtrarEntrenadores(e) {
+            const termino = e.target.value.toLowerCase();
+            const filtrados = entrenadores.filter(ent =>
+                ent.nombre.toLowerCase().includes(termino) ||
+                (ent.especialidad && ent.especialidad.toLowerCase().includes(termino))
+            );
+            renderizarEntrenadores(filtrados);
+        }
+
+        function imprimirCredencial(id) {
+            const entrenador = entrenadores.find(e => e.idEntrenador == id);
+            if (!entrenador) return;
+
+            const contenido = document.getElementById('credencial-contenido');
+            const iniciales = entrenador.nombre.split(' ').map(n => n[0]).join('').toUpperCase();
+            
+            contenido.innerHTML = `
+                <div class="credencial">
+                    <div class="credencial-header">
+                        <h2>🏋️ CUERPO SANO</h2>
+                        <p>Identificación de Entrenador</p>
+                    </div>
+                    
+                    <div class="credencial-foto">
+                        ${iniciales}
+                    </div>
+                    
+                    <div class="credencial-info">
+                        <div class="credencial-info-item">
+                            <label>NOMBRE COMPLETO</label>
+                            <strong>${entrenador.nombre}</strong>
+                        </div>
+                        
+                        <div class="credencial-info-item">
+                            <label>ID ENTRENADOR</label>
+                            <strong>#${String(entrenador.idEntrenador).padStart(4, '0')}</strong>
+                        </div>
+                        
+                        <div class="credencial-info-item">
+                            <label>ESPECIALIDAD</label>
+                            <strong>${entrenador.especialidad || 'General'}</strong>
+                        </div>
+                        
+                        <div class="credencial-info-item">
+                            <label>CERTIFICACIÓN</label>
+                            <strong>${entrenador.certificacion == 1 ? '✓ Certificado' : 'No Certificado'}</strong>
+                            ${entrenador.fechaCertificacion ? `<br><small>Desde: ${entrenador.fechaCertificacion}</small>` : ''}
+                        </div>
+                        
+                        <div class="credencial-info-item">
+                            <label>ESTADO</label>
+                            <strong>${entrenador.activo == 1 ? '✓ ACTIVO' : 'INACTIVO'}</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="credencial-footer">
+                        Válido mientras el entrenador esté activo<br>
+                        Emitido: ${new Date().toLocaleDateString('es-ES')}
+                    </div>
+                </div>
+            `;
+            
+            abrirModal('modal-credencial');
+        }
+
+        // ============================================
+        // FUNCIONES AUXILIARES
+        // ============================================
+
+        function cargarActividadesEnSelect() {
+            const select = document.getElementById('clase-actividad');
+            select.innerHTML = '<option value="">Seleccione actividad...</option>';
+            actividades.filter(a => a.activo == 1).forEach(act => {
+                select.innerHTML += `<option value="${act.idActividad}">${act.nombre} (${act.duracion} min)</option>`;
+            });
+        }
+
+        function cargarEntrenadoresEnSelect() {
+            const select = document.getElementById('clase-entrenador');
+            select.innerHTML = '<option value="">Seleccione entrenador...</option>';
+            entrenadores.filter(e => e.activo == 1).forEach(ent => {
+                select.innerHTML += `<option value="${ent.idEntrenador}">${ent.nombre}</option>`;
+            });
+        }
+
+        function abrirModal(idModal) {
+            document.getElementById(idModal).classList.add('active');
+        }
+
+        function cerrarModal(idModal) {
+            document.getElementById(idModal).classList.remove('active');
+        }
+
+        function mostrarExito(mensaje) {
+            const alerta = document.createElement('div');
+            alerta.className = 'alert alert-success';
+            alerta.textContent = mensaje;
+            alerta.style.position = 'fixed';
+            alerta.style.top = '20px';
+            alerta.style.right = '20px';
+            alerta.style.zIndex = '9999';
+            alerta.style.minWidth = '300px';
+            document.body.appendChild(alerta);
+            setTimeout(() => {
+                alerta.remove();
+            }, 3000);
+        }
+
+        function mostrarError(mensaje) {
+            const alerta = document.createElement('div');
+            alerta.className = 'alert alert-error';
+            alerta.textContent = mensaje;
+            alerta.style.position = 'fixed';
+            alerta.style.top = '20px';
+            alerta.style.right = '20px';
+            alerta.style.zIndex = '9999';
+            alerta.style.minWidth = '300px';
+            document.body.appendChild(alerta);
+            setTimeout(() => {
+                alerta.remove();
+            }, 4000);
+        }
+
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.classList.remove('active');
+            }
+        }
+    </script>
+</body>
+</html>

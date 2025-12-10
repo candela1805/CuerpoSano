@@ -1,0 +1,52 @@
+<?php
+session_start();
+require_once '../db.php';
+
+header('Content-Type: application/json');
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $usuario = $_POST['usuario'] ?? '';
+    $password_form = $_POST['password'] ?? ''; // El name del input ahora es 'password'
+
+    if (empty($usuario) || empty($password_form)) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Usuario y contraseña son requeridos.']);
+        exit;
+    } else {
+        try {
+            $stmt = $pdo->prepare("SELECT * FROM empleado WHERE usuario = ?");
+            $stmt->execute([$usuario]);
+            $empleado = $stmt->fetch();
+
+            // ¡IMPORTANTE! Usamos password_verify para comparar la contraseña hasheada
+            if ($empleado && password_verify($password_form, $empleado['password'])) {
+                session_regenerate_id(true);
+                $_SESSION['usuario'] = $empleado['usuario'];
+                $_SESSION['idEmpleado'] = $empleado['idEmpleado'];
+
+                // En lugar de redirigir, enviamos una respuesta JSON exitosa
+                echo json_encode([
+                    'success' => true,
+                    'message' => 'Inicio de sesión exitoso.',
+                    'redirect' => 'panelPrincipal.php' // El JS usará esto para redirigir
+                ]);
+                exit;
+            } else {
+                http_response_code(401); // Unauthorized
+                echo json_encode(['error' => 'Usuario o contraseña incorrectos.']);
+                exit;
+            }
+        } catch (PDOException $e) {
+            // En producción, es mejor registrar el error real en un archivo de log
+            // y no mostrarlo al usuario para no exponer detalles de la infraestructura.
+            error_log("Error en login: " . $e->getMessage());
+            http_response_code(500);
+            echo json_encode(['error' => 'Ocurrió un error interno. Por favor, intente más tarde.']);
+            exit;
+        }
+    }
+}
+
+
+
+

@@ -1,0 +1,139 @@
+/* Fuente y fondo */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #d9f7be, #b7e6ff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+
+/* Contenedor principal */
+.registro-container {
+  background: #fff;
+  padding: 40px 30px;
+  border-radius: 25px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+  max-width: 450px;
+  width: 90%;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+h1 {
+  font-size: 28px;
+  color: #1b4332;
+  margin-bottom: 5px;
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: 18px;
+  color: #52b788;
+  margin-bottom: 25px;
+}
+
+label {
+  display: block;
+  text-align: left;
+  margin-bottom: 5px;
+  color: #1b4332;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+input, select {
+  width: 100%;
+  padding: 14px 15px;
+  border-radius: 12px;
+  border: none;
+  margin-bottom: 18px;
+  font-size: 14px;
+  background-color: #f6fcff;
+  box-shadow: inset 0 0 3px rgba(0,0,0,0.05);
+  box-sizing: border-box;
+}
+
+input:focus, select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px #74c69d;
+}
+
+/* Flecha select */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path fill="%2374c69d" d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px 12px;
+  cursor: pointer;
+}
+
+button {
+  background-color: #52b788;
+  color: #fff;
+  border: none;
+  padding: 14px;
+  border-radius: 12px;
+  width: 100%;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: #40916c;
+  transform: translateY(-2px);
+}
+
+.texto-inferior {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.texto-inferior a {
+  color: #1b4332;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.texto-inferior a:hover {
+  text-decoration: underline;
+}
+
+/* Mensajes de error y éxito */
+.mensaje {
+  margin-bottom: 15px;
+  padding: 12px;
+  border-radius: 10px;
+  font-size: 14px;
+}
+
+.error {
+  background-color: #ffe3e3;
+  color: #d00000;
+}
+
+.exito {
+  background-color: #d9f7be;
+  color: #1b4332;
+}
+
+/* Responsive */
+@media(max-width: 500px){
+  .registro-container {
+    padding: 30px 20px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  h2 {
+    font-size: 16px;
+  }
+}

@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Pagos - CuerpoSano</title>
+    <link rel="stylesheet" href="../assets/css/payment.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>💪 Sistema de Pagos - CuerpoSano</h1>
+            <p>Gestión de Pagos de Membresías</p>
+            
+            <div class="progress-bar" id="progressBar">
+                <div class="step active">
+                    <div class="step-circle">1</div>
+                    <div class="step-label">Miembro</div>
+                </div>
+                <div class="step">
+                    <div class="step-circle">2</div>
+                    <div class="step-label">Membresía</div>
+                </div>
+                <div class="step">
+                    <div class="step-circle">3</div>
+                    <div class="step-label">Pago</div>
+                </div>
+                <div class="step">
+                    <div class="step-circle">4</div>
+                    <div class="step-label">Confirmación</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 1: Seleccionar Miembro -->
+        <div class="card active" id="step1">
+            <h2>👤 Seleccionar Miembro</h2>
+            <div id="membersContainer">
+                <p>Cargando miembros...</p>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="goToStep(2)" id="btn-step1" disabled>Continuar</button>
+            </div>
+        </div>
+
+        <!-- Step 2: Seleccionar Membresía -->
+        <div class="card" id="step2">
+            <h2>📅 Seleccionar Membresía</h2>
+            <div class="membership-grid" id="membershipsContainer"></div>
+
+            <div id="paymentDiscountRow" class="form-group" style="margin-top: 20px;">
+                <label for="discountSelect" style="font-weight: bold; color: #333; margin-bottom: 8px; display: block;">🏷️ Aplicar Descuento (Opcional)</label>
+                
+                <!-- Botones de acceso rápido -->
+                <div class="quick-discounts">
+                    <button 
+                        class="btn btn-quick-discount" 
+                        data-description="Descuento Estudiante" 
+                        data-percentage="20">
+                        Estudiante (-20%)
+                    </button>
+                    <!-- Puedes agregar más botones aquí -->
+                     <button 
+                        class="btn btn-quick-discount" 
+                        data-description="Descuento jubilado" 
+                        data-percentage="25">
+                        jubilado (-25%)
+                    </button>
+                    <button 
+                        class="btn btn-quick-discount" 
+                        data-description="sim Descuento " 
+                        data-percentage="0">
+                        sin descuento (0%)
+                    </button>
+                </div>
+            </div>
+
+            <div class="summary-box" id="summaryBox" style="display: none;">
+                <h3>Resumen</h3>
+                <div class="summary-row">
+                    <span>Membresía:</span>
+                    <span id="summaryMembership">-</span>
+                </div>
+                <div class="summary-row">
+                    <span>Precio base:</span>
+                    <span id="summaryBasePrice">$0.00</span>
+                </div>
+                <div class="summary-row" id="summaryDiscountRow" style="display: none;">
+                    <span>Descuento:</span>
+                    <span id="summaryDiscount">-</span>
+                </div>
+                <div class="summary-row" style="border-top: 2px solid #667eea; margin-top: 5px; padding-top: 10px;">
+                    <span>TOTAL A PAGAR:</span>
+                    <span id="summaryTotal">$0.00</span>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="goToStep(1)">Atrás</button>
+                <button class="btn btn-primary" onclick="goToStep(3)" id="btn-step2" disabled>Continuar</button>
+            </div>
+        </div>
+
+        <!-- Step 3: Método de Pago -->
+        <div class="card" id="step3">
+            <h2>💳 Método de Pago</h2>
+            
+            <div class="payment-methods">
+                <div class="payment-method-card" onclick="selectPaymentMethod('Efectivo')">
+                    <div class="payment-icon">💵</div>
+                    <strong>Efectivo</strong>
+                </div>
+                <div class="payment-method-card" onclick="selectPaymentMethod('Tarjeta de Crédito')">
+                    <div class="payment-icon">💳</div>
+                    <strong>Tarjeta Crédito</strong>
+                </div>
+                <div class="payment-method-card" onclick="selectPaymentMethod('Tarjeta de Débito')">
+                    <div class="payment-icon">💳</div>
+                    <strong>Tarjeta Débito</strong>
+                </div>
+                <div class="payment-method-card" onclick="selectPaymentMethod('Transferencia Bancaria')">
+                    <div class="payment-icon">🏦</div>
+                    <strong>Transferencia</strong>
+                </div>
+                <div class="payment-method-card" onclick="selectPaymentMethod('QR')">
+                    <div class="payment-icon">📱</div>
+                    <strong>Código QR</strong>
+                </div>
+            </div>
+
+            <!-- Formularios de pago -->
+            <div id="paymentForm"></div>
+
+            <div class="summary-box">
+                <h3>Resumen del Pago</h3>
+                <div class="summary-row">
+                    <span>Miembro:</span>
+                    <span id="paymentMember">-</span>
+                </div>
+                <div class="summary-row">
+                    <span>Membresía:</span>
+                    <span id="paymentMembership">-</span>
+                </div>
+                <div class="summary-row" id="paymentDiscountRow" style="display: none;">
+                    <span>Descuento:</span>
+                    <span id="paymentDiscount">-</span>
+                </div>
+                <div class="summary-row">
+                    <span>TOTAL:</span>
+                    <span id="paymentTotal">$0.00</span>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-secondary" onclick="goToStep(2)">Atrás</button>
+                <button class="btn btn-primary" onclick="processPayment()" id="btn-step3" disabled>
+                    Procesar Pago
+                </button>
+            </div>
+        </div>
+
+        <!-- Step 4: Confirmación -->
+        <div class="card" id="step4">
+            <div class="success-icon">✅</div>
+            <h2 style="text-align: center;">¡Pago Procesado Exitosamente!</h2>
+            
+            <div class="confirmation-details">
+                <h3>Detalles del Pago</h3>
+                <div class="summary-row">
+                    <span>Referencia:</span>
+                    <span id="confirmReference">-</span>
+                </div>
+                <div class="summary-row">
+                    <span>Miembro:</span>
+                    <span id="confirmMember">-</span>
+                </div>
+                <div class="summary-row">
+                    <span>Membresía:</span>
+                    <span id="confirmMembership">-</span>
+                </div>
+                <div class="summary-row">
+                    <span>Método de Pago:</span>
+                    <span id="confirmMethod">-</span>
+                </div>
+                <div class="summary-row">
+                    <span>Fecha:</span>
+                    <span id="confirmDate">-</span>
+                </div>
+                <div class="summary-row">
+                    <span>MONTO PAGADO:</span>
+                    <span id="confirmAmount" style="color: #28a745;">$0.00</span>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="resetPayment()">Realizar Otro Pago</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/payment.js"></script>
+</body>
+</html>

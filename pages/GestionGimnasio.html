@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Actividades - Gimnasio Cuerpo Sano</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #a8e6cf, #dcedc1, #a9def9);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    header {
+      background-color: #ffffffcc;
+      backdrop-filter: blur(8px);
+      width: 100%;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+    }
+
+    header h1 {
+      color: #2b6777;
+      margin: 0;
+    }
+
+    main {
+      margin: 40px 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      width: 90%;
+      max-width: 1000px;
+    }
+
+    .card {
+      background-color: #ffffffcc;
+      backdrop-filter: blur(8px);
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      transition: 0.3s;
+      text-align: center;
+    }
+
+    .card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.25);
+    }
+
+    .card img {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+    }
+
+    .card h2 {
+      color: #2b6777;
+      margin: 15px 0 5px 0;
+      font-size: 20px;
+    }
+
+    .card p {
+      color: #40916c;
+      padding: 0 15px 15px;
+      font-size: 14px;
+    }
+
+    footer {
+      background-color: #ffffffcc;
+      backdrop-filter: blur(8px);
+      padding: 15px;
+      text-align: center;
+      color: #2b6777;
+      font-size: 14px;
+      width: 100%;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: #52b788;
+      color: white;
+      padding: 10px 18px;
+      border-radius: 10px;
+      text-decoration: none;
+      margin-top: 10px;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #40916c;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Gestión de Actividades - Gimnasio Cuerpo Sano</h1>
+  </header>
+
+  <main>
+    <div class="card">
+      <img src="https://www.webconsultas.com/sites/default/files/styles/wc_adaptive_image__small/public/media/0d/temas/yoga.jpg.webp" alt="Clases de Yoga">
+      <h2>Yoga</h2>
+      <p>Sesiones para mejorar la flexibilidad, respiración y relajación. Ideal para todas las edades.</p>
+      <a href="#" class="btn">Ver Detalles</a>
+    </div>
+
+    <div class="card">
+      <img src="https://plus.unsplash.com/premium_photo-1733328015522-c497d190f74b?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8Z3ltJTIwZml0bmVzc3xlbnwwfHwwfHx8MA%3D%3D&fm=jpg&q=60&w=3000" alt="Musculación">
+      <h2>Musculación</h2>
+      <p>Entrenamientos personalizados con máquinas y pesas libres para ganar fuerza y masa muscular.</p>
+      <a href="#" class="btn">Ver Detalles</a>
+    </div>
+
+    <div class="card">
+      <img src="https://www.superprof.com.ar/blog/wp-content/uploads/2019/07/hacer-zumba-adelgazar.jpg" alt="Zumba">
+      <h2>Zumba</h2>
+      <p>Clases grupales llenas de ritmo y energía para quemar calorías mientras te divertís.</p>
+      <a href="#" class="btn">Ver Detalles</a>
+    </div>
+
+    <div class="card">
+      <img src="https://tn.com.ar/resizer/v2/ni-todos-los-dias-ni-1-vez-cuantas-veces-por-semana-se-recomienda-hacer-pilates-y-por-que-foto-adobestock-BUCKPIXXNNBVPLRWEAKYT27BDU.png?auth=ce7a5adabd595b75fd0d2e1108cf6ec8b0a218c6256072ebd2ccca97963ae8bc&width=1023" alt="Pilates">
+      <h2>Pilates</h2>
+      <p>Fortalecé tu core, mejorá tu postura y equilibrio con clases guiadas por profesionales.</p>
+      <a href="#" class="btn">Ver Detalles</a>
+    </div>
+  </main>
+
+  <footer>
+    © 2025 Gimnasio Cuerpo Sano — Todos los derechos reservados.
+  </footer>
+
+</body>
+</html>
+

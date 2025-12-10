@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Membresías - CuerpoSano</title>
+    <link rel="stylesheet" href="../assets/css/gestionMembresias.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏋️ CuerpoSano</h1>
+            <p>Sistema de Gestión de Membresías</p>
+        </header>
+
+        <div class="tabs">
+            <div class="tab active" onclick="window.openTab('membresias')">📋 Membresías</div>
+            <div class="tab" onclick="window.openTab('inscripciones')">✍️ Inscripciones</div>
+            <div class="tab" onclick="window.openTab('asistencias')">✅ Asistencias</div>
+        </div>
+
+        <!-- Tab: Membresías -->
+        <div id="membresias" class="tab-content active">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h3>Tipos de Membresía</h3>
+                    <div>
+                        <button class="btn btn-success" onclick="abrirModalAgregar()">
+                            ➕ Agregar Membresía
+                        </button>
+                        <button class="btn btn-primary" onclick="imprimirMembresias()">
+                            🖨️ Imprimir Listado
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="descuento-info">
+                    <h4>Descuentos Aplicables</h4>
+                    <ul>
+                        <li><strong>Estudiantes primarios/secundarios:</strong> 20% de descuento</li>
+                        <li><strong>Mayores de 60 años:</strong> 25% de descuento</li>
+                    </ul>
+                </div>
+                
+                <table id="tablaMembresias">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Precio Base</th>
+                            <th>Duración</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bodyMembresias">
+                        <tr>
+                            <td colspan="6" style="text-align:center;">Cargando...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab: Inscripciones -->
+        <div id="inscripciones" class="tab-content">
+            <div class="card">
+                <h3>Inscribir Miembros a Clases</h3>
+                <form id="formInscripcion">
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label>Seleccionar Miembro</label>
+                            <select id="miembroInscripcion" required>
+                                <option value="">-- Seleccione un miembro --</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Seleccionar Clase</label>
+                            <select id="claseInscripcion" required onchange="mostrarDetallesClase()">
+                                <option value="">-- Seleccione una clase --</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="detallesClase" style="display: none;" class="clase-horarios"></div>
+                    <button type="submit" class="btn btn-primary">✍️ Inscribir a Clase</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3>Clases Disponibles</h3>
+                <table id="tablaClases">
+                    <thead>
+                        <tr>
+                            <th>Clase</th>
+                            <th>Actividad</th>
+                            <th>Entrenador</th>
+                            <th>Horario</th>
+                            <th>Cupos</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bodyClases">
+                        <tr>
+                            <td colspan="5" style="text-align:center;">Cargando...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab: Asistencias -->
+        <div id="asistencias" class="tab-content">
+            <div class="card">
+                <h3>Registrar Asistencia</h3>
+                <!-- Búsqueda de Miembro -->
+                <div class="form-group">
+                    <label>Buscar Miembro (por DNI o Nombre)</label>
+                    <div style="position:relative;">
+                        <input 
+                            type="text" 
+                            id="busquedaMiembro" 
+                            placeholder="Ingrese DNI o nombre del miembro..."
+                            oninput="buscarMiembro()"
+                            autocomplete="off">
+                            <!-- Resultados de búsqueda -->
+                             <div id="resultadosBusqueda" class="resultados-busqueda" style="display: none;"></div>
+                        <button 
+                            type="button" 
+                            class="btn btn-warning" 
+                            onclick="limpiarBusqueda()"
+                            style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); padding: 8px 15px;">
+                            🔄 Limpiar
+                        </button>
+                    </div>
+                <div id="infoMiembroSeleccionado" style="display: none;"></div>
+
+                <div id="listaClasesMiembro" style="display: none;">
+                    <h4>Clases Inscritas</h4>
+                    <table id="tablaClasesMiembro">
+                        <thead>
+                            <tr>
+                                <th>Clase</th>
+                                <th>Actividad</th>
+                                <th>Entrenador</th>
+                                <th>Horario</th>
+                                <th>Estado</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyClasesMiembro"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Agregar Membresía -->
+    <div id="modalAgregar" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>➕ Agregar Nueva Membresía</h3>
+                <span class="close" onclick="cerrarModalAgregar()">&times;</span>
+            </div>
+            <form id="formAgregar">
+                <div class="form-group">
+                    <label>Nombre de la Membresía *</label>
+                    <input type="text" id="nombreNuevo" placeholder="Ej: Premium Plus" required>
+                </div>
+                <div class="form-group">
+                    <label>Descripción *</label>
+                    <textarea id="descripcionNuevo" rows="3" placeholder="Descripción de la membresía" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Precio Base *</label>
+                    <input type="number" id="precioNuevo" step="0.01" min="0" placeholder="0.00" required>
+                </div>
+                <div class="form-group">
+                    <label>Duración (días) *</label>
+                    <select id="duracionNuevo" required>
+                        <option value="">-- Seleccione --</option>
+                        <option value="30">Mensual (30 días)</option>
+                        <option value="90">Trimestral (90 días)</option>
+                        <option value="365">Anual (365 días)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Clave de Seguridad *</label>
+                    <input type="password" id="claveAgregar" placeholder="Ingrese la clave" required>
+                </div>
+                <button type="submit" class="btn btn-success">💾 Guardar Membresía</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para editar precio -->
+    <div id="modalPrecio" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Editar Precio</h3>
+                <span class="close" onclick="cerrarModal()">&times;</span>
+            </div>
+            <form id="formPrecio">
+                <input type="hidden" id="idTipoEdit">
+                <div class="form-group">
+                    <label>Membresía</label>
+                    <input type="text" id="nombreMembresiaEdit" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Precio Actual</label>
+                    <input type="text" id="precioActual" readonly>
+                </div>
+                <div class="form-group">
+                    <label>Nuevo Precio</label>
+                    <input type="number" id="nuevoPrecio" step="0.01" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label>Clave de Seguridad</label>
+                    <input type="password" id="claveSeguridad" placeholder="Ingrese la clave" required>
+                </div>
+                <button type="submit" class="btn btn-primary">💾 Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="../assets/js/gestionMembresias.js"></script>
+</body>
+</html>
